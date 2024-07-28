@@ -11,7 +11,6 @@ extends CharacterBody2D
 # Sprite and timers
 @onready var sprite_2d : Sprite2D = $Sprite2D
 @onready var roll_cooldown : Timer = $RollCooldown
-@onready var roll_time : Timer = $RollTimer
 
 # Buffer and coyote time frames
 @export var jump_buffer_time : int = 15
@@ -32,7 +31,6 @@ var previous_velocity : Vector2
 
 # Bool variables
 var can_roll : bool = true
-var rolling : bool = false
 var player_direction : bool = true
 
 func _physics_process(delta):
@@ -42,9 +40,8 @@ func _physics_process(delta):
 	
 	if Input.is_action_pressed("roll") and can_roll:
 		can_roll = false
+		
 		roll_cooldown.start()
-		roll_time.start()
-		rolling = true
 		
 		if (player_direction == true):
 			velocity.x = roll_speed
@@ -87,11 +84,10 @@ func moving():
 	
 	# Lerping velocity.x to maximum_speed if player is not rolling
 	if (velocity.x > max_speed) or (velocity.x < -max_speed):
-		if (rolling == false):
-			if (player_direction == true):
-				velocity.x = lerp(velocity.x, max_speed, friction)
-			else: 
-				velocity.x = lerp(velocity.x, -max_speed, friction)
+		if (player_direction == true):
+			velocity.x = lerp(velocity.x, max_speed, friction)
+		else: 
+			velocity.x = lerp(velocity.x, -max_speed, friction)
 
 func jumping(delta):
 	
@@ -130,6 +126,3 @@ func jumping(delta):
 # Roll cooldown and time of rolling
 func _on_roll_cooldown_timeout():
 	can_roll = true
-
-func _on_roll_timer_timeout():
-	rolling = false

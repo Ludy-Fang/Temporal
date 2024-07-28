@@ -13,7 +13,7 @@ jump_height = 100.0
 jump_time_to_peak = 0.5
 jump_time_to_descent = 0.4
 max_speed = 200.0
-roll_speed = 500.0
+roll_speed = 600.0
 acceleration = 50.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -28,9 +28,4 @@ shape = SubResource("CapsuleShape2D_yik6a")
 [node name="RollCooldown" type="Timer" parent="."]
 one_shot = true
 
-[node name="RollTimer" type="Timer" parent="."]
-wait_time = 0.1
-one_shot = true
-
 [connection signal="timeout" from="RollCooldown" to="." method="_on_roll_cooldown_timeout"]
-[connection signal="timeout" from="RollTimer" to="." method="_on_roll_timer_timeout"]
