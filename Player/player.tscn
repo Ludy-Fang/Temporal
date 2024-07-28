@@ -9,6 +9,7 @@ height = 22.0
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_23u7b")
+roll_speed = 10000.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_2nmd6")
@@ -19,7 +20,12 @@ frame = 2
 position = Vector2(-2, 1)
 shape = SubResource("CapsuleShape2D_yik6a")
 
+[node name="RollTimer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
 [node name="RollCooldown" type="Timer" parent="."]
 one_shot = true
 
+[connection signal="timeout" from="RollTimer" to="." method="_on_roll_timer_timeout"]
 [connection signal="timeout" from="RollCooldown" to="." method="_on_roll_cooldown_timeout"]

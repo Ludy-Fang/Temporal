@@ -11,6 +11,7 @@ extends CharacterBody2D
 # Sprite and timers
 @onready var sprite_2d : Sprite2D = $Sprite2D
 @onready var roll_cooldown : Timer = $RollCooldown
+@onready var roll_timer : Timer = $RollTimer
 
 # Buffer and coyote time frames
 @export var jump_buffer_time : int = 15
@@ -26,28 +27,32 @@ var previous_velocity : Vector2
 
 # Variables for movement
 @export var max_speed : float = 200.0
-@export var roll_speed : float = 600.0
+@export var roll_speed : float = 200.0
 @export var acceleration : float = 50.0
 
 # Bool variables
 var can_roll : bool = true
 var player_direction : bool = true
 
+var rolling : bool = false
+
 func _physics_process(delta):
 	
+	# Ignore this, this is for testing
 	if position.y > 20:
 		position = Vector2(3, -20)
 	
 	if Input.is_action_pressed("roll") and can_roll:
 		can_roll = false
-		
+		rolling = true
+		roll_timer.start()
 		roll_cooldown.start()
 		
 		# Applying a high velocity.x instantly for roll
-		if (player_direction == true):
-			velocity.x = roll_speed * delta
+		if player_direction:
+			velocity.x = roll_speed
 		else:
-			velocity.x = -roll_speed * delta
+			velocity.x -= roll_speed
 	
 	moving()
 	jumping(delta)
@@ -85,10 +90,8 @@ func moving():
 	
 	# Lerping velocity.x to maximum_speed if player is not rolling
 	if (velocity.x > max_speed) or (velocity.x < -max_speed):
-		if (player_direction == true):
-			velocity.x = lerp(velocity.x, max_speed, friction)
-		else: 
-			velocity.x = lerp(velocity.x, -max_speed, friction)
+		if (rolling == false):
+			velocity.x = clamp(velocity.x, -max_speed, max_speed)
 
 func jumping(delta):
 	
@@ -127,3 +130,6 @@ func jumping(delta):
 # Roll cooldown and time of rolling
 func _on_roll_cooldown_timeout():
 	can_roll = true
+
+func _on_roll_timer_timeout():
+	rolling = false
