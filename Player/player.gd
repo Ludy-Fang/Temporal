@@ -85,9 +85,13 @@ func moving():
 	else:
 		velocity.x = lerp(velocity.x, 0.0, friction)
 	
-	# Setting maximum velocity.x if player is not rolling
-	if (rolling == false):
-		velocity.x = clamp(velocity.x, -max_speed, max_speed)
+	# Lerping velocity.x to maximum_speed if player is not rolling
+	if (velocity.x > max_speed) or (velocity.x < -max_speed):
+		if (rolling == false):
+			if (player_direction == true):
+				velocity.x = lerp(velocity.x, max_speed, friction)
+			else: 
+				velocity.x = lerp(velocity.x, -max_speed, friction)
 
 func jumping(delta):
 	
