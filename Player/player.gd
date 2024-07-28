@@ -1,9 +1,9 @@
 extends CharacterBody2D
 
 # Variables for jumping 
-@export var jump_height : float
-@export var jump_time_to_peak : float
-@export var jump_time_to_descent : float
+@export var jump_height : float = 100.0
+@export var jump_time_to_peak : float = 0.5
+@export var jump_time_to_descent : float = 0.4
 @onready var jump_velocity : float = ((2.0 * jump_height) / jump_time_to_peak) * -1.0
 @onready var jump_gravity : float = ((-2.0 * jump_height) / (jump_time_to_peak * jump_time_to_peak)) * -1.0
 @onready var fall_gravity : float = ((-2.0 * jump_height) / (jump_time_to_descent * jump_time_to_descent)) * -1.0
@@ -25,9 +25,9 @@ const maximum_falling_velocity : float = 400.0
 var previous_velocity : Vector2
 
 # Variables for movement
-@export var max_speed : float
-@export var roll_speed : float
-@export var acceleration : float
+@export var max_speed : float = 200.0
+@export var roll_speed : float = 600.0
+@export var acceleration : float = 50.0
 
 # Bool variables
 var can_roll : bool = true
@@ -43,10 +43,11 @@ func _physics_process(delta):
 		
 		roll_cooldown.start()
 		
+		# Applying a high velocity.x instantly for roll
 		if (player_direction == true):
-			velocity.x = roll_speed
+			velocity.x = roll_speed * delta
 		else:
-			velocity.x = -roll_speed
+			velocity.x = -roll_speed * delta
 	
 	moving()
 	jumping(delta)
