@@ -2,8 +2,8 @@ extends CharacterBody2D
 
 # Variables for jumping 
 @export var jump_height : float = 100.0
-@export var jump_time_to_peak : float = 0.5
-@export var jump_time_to_descent : float = 0.4
+@export var jump_time_to_peak : float = 0.6
+@export var jump_time_to_descent : float = 0.5
 @onready var jump_velocity : float = ((2.0 * jump_height) / jump_time_to_peak) * -1.0
 @onready var jump_gravity : float = ((-2.0 * jump_height) / (jump_time_to_peak * jump_time_to_peak)) * -1.0
 @onready var fall_gravity : float = ((-2.0 * jump_height) / (jump_time_to_descent * jump_time_to_descent)) * -1.0
@@ -29,7 +29,7 @@ var previous_velocity : Vector2
 
 # Variables for movement
 @export var max_speed : float = 200.0
-@export var roll_speed : float = 000.0
+@export var roll_speed : float = 400.0
 @export var acceleration : float = 50.0
 
 # Bool variables
@@ -40,7 +40,7 @@ var rolling : bool = false
 func _physics_process(delta):
 	
 	# Ignore this, this is for testing
-	if position.y > 20:
+	if position.y > 0:
 		position = Vector2(3, -20)
 	
 	roll()

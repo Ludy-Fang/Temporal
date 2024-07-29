@@ -27,5 +27,8 @@ one_shot = true
 [node name="RollCooldown" type="Timer" parent="."]
 one_shot = true
 
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(2, 2)
+
 [connection signal="timeout" from="RollTimer" to="." method="_on_roll_timer_timeout"]
 [connection signal="timeout" from="RollCooldown" to="." method="_on_roll_cooldown_timeout"]

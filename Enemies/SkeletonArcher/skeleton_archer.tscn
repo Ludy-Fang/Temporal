@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://ClassTemplates/enemy_idle_template.gd" id="3_evkvh"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hvpsw"]
+radius = 6.0
 height = 38.0
 
 [node name="SkeletonArcher" type="CharacterBody2D"]
@@ -18,13 +19,24 @@ vframes = 4
 frame = 6
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(2, 2)
+position = Vector2(1, 2)
 shape = SubResource("CapsuleShape2D_hvpsw")
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
 script = ExtResource("2_vgfwq")
 initial_state = NodePath("EnemyIdle")
 
-[node name="EnemyIdle" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy")]
+[node name="EnemyIdle" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy", "enemy_sprite", "ledge_check_left", "ledge_check_right")]
 script = ExtResource("3_evkvh")
 enemy = NodePath("../..")
+enemy_sprite = NodePath("../../Sprite2D")
+ledge_check_left = NodePath("../../LedgeCheckLeft")
+ledge_check_right = NodePath("../../LedgeCheckRight")
+
+[node name="LedgeCheckRight" type="RayCast2D" parent="."]
+position = Vector2(5, 21)
+target_position = Vector2(2.08165e-12, 2)
+
+[node name="LedgeCheckLeft" type="RayCast2D" parent="."]
+position = Vector2(-4, 21)
+target_position = Vector2(2.08165e-12, 2)

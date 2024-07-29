@@ -1,11 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://t6880ct1ucr8"]
+[gd_scene load_steps=5 format=3 uid="uid://jyyeck1htq6t"]
 
-[ext_resource type="Texture2D" uid="uid://blnivwgqdfpuo" path="res://Resources/Free/Terrain/Terrain (16x16).png" id="1_8c6uv"]
-[ext_resource type="PackedScene" uid="uid://d1rcvwymfwqrg" path="res://Player/player.tscn" id="2_rtge5"]
-[ext_resource type="PackedScene" uid="uid://dnnqprjo6fe5" path="res://Enemies/SkeletonArcher/skeleton_archer.tscn" id="3_osohv"]
+[ext_resource type="Texture2D" uid="uid://blnivwgqdfpuo" path="res://Resources/Free/Terrain/Terrain (16x16).png" id="1_jyw3s"]
+[ext_resource type="PackedScene" uid="uid://d1rcvwymfwqrg" path="res://Player/player.tscn" id="2_11u0q"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ko2e4"]
-texture = ExtResource("1_8c6uv")
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1k36o"]
+texture = ExtResource("1_jyw3s")
 0:0/0 = 0
 0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 0:0/0/physics_layer_0/angular_velocity = 0.0
@@ -448,21 +447,17 @@ texture = ExtResource("1_8c6uv")
 20:10/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 20:10/0/physics_layer_0/angular_velocity = 0.0
 
-[sub_resource type="TileSet" id="TileSet_42tqb"]
+[sub_resource type="TileSet" id="TileSet_gt43h"]
 physics_layer_0/collision_layer = 1
-sources/0 = SubResource("TileSetAtlasSource_ko2e4")
+sources/0 = SubResource("TileSetAtlasSource_1k36o")
 
-[node name="TestLevel" type="Node2D"]
-
-[node name="Player" parent="." instance=ExtResource("2_rtge5")]
-position = Vector2(-381, -12)
-jump_height = 80.0
-roll_speed = 400.0
-
-[node name="SkeletonArcher" parent="." instance=ExtResource("3_osohv")]
-position = Vector2(264, -23)
+[node name="TestLevel2" type="Node2D"]
 
 [node name="TileMap" type="TileMap" parent="."]
-tile_set = SubResource("TileSet_42tqb")
+tile_set = SubResource("TileSet_gt43h")
 format = 2
-layer_0/tile_data = PackedInt32Array(65510, 458752, 0, 65511, 458752, 0, 65512, 458752, 0, 65513, 458752, 0, 65514, 458752, 0, 65509, 458752, 0, 65508, 458752, 0, 65507, 458752, 0, 65506, 458752, 0, 65505, 458752, 0, 65515, 458752, 0, 65516, 458752, 0, 65517, 458752, 0, 65518, 458752, 0, 65521, 458752, 0, 65522, 458752, 0, 65523, 458752, 0, 65524, 458752, 0, 65525, 458752, 0, 65526, 458752, 0, 65527, 458752, 0, 65528, 458752, 0, 65529, 458752, 0, 65530, 458752, 0, 65531, 458752, 0, 65532, 458752, 0, 65533, 458752, 0, 65534, 458752, 0, 65535, 458752, 0, 0, 458752, 0, 1, 458752, 0, 2, 458752, 0, 3, 458752, 0, 4, 458752, 0, 5, 458752, 0, 6, 458752, 0, 7, 458752, 0, 8, 458752, 0, 9, 458752, 0, 10, 458752, 0, 11, 458752, 0, 12, 458752, 0, 13, 458752, 0, 14, 458752, 0, 15, 458752, 0, 16, 458752, 0, 17, 458752, 0, 18, 458752, 0, 19, 458752, 0, 20, 458752, 0, 21, 458752, 0, 22, 458752, 0, 23, 458752, 0)
+layer_0/tile_data = PackedInt32Array(65535, 458752, 0, 0, 458752, 0, 65534, 458752, 0, 1, 458752, 0, 65533, 458752, 0, 2, 458752, 0, -327678, 458752, 0, -327677, 458752, 0, -327676, 458752, 0, -262147, 458752, 0, -262148, 458752, 0, -262149, 458752, 0, -196601, 458752, 0, -196600, 458752, 0, -196599, 458752, 0, -196598, 458752, 0, -196597, 458752, 0, -131080, 458752, 0, -131081, 458752, 0, -131082, 458752, 0, -131083, 458752, 0, -131084, 458752, 0, 65523, 458752, 0, 65522, 458752, 0, 65521, 458752, 0, 65520, 458752, 0, 65519, 458752, 0, 65518, 458752, 0, 65517, 458752, 0, 12, 458752, 0, 13, 458752, 0, 14, 458752, 0, 15, 458752, 0, 16, 458752, 0, 17, 458752, 0, 18, 458752, 0, 19, 458752, 0, -524282, 458752, 0, -524281, 458752, 0, -720886, 458752, 0, -720885, 458752, 0, -851954, 458752, 0, -851953, 458752, 0, -393224, 458752, 0, -393225, 458752, 0, -720906, 458752, 0, -720907, 458752, 0, -458770, 458752, 0, -458771, 458752, 0, -327661, 458752, 0, -327662, 458752, 0, -327663, 458752, 0, -393189, 458752, 0, -393188, 458752, 0, -393190, 458752, 0)
+
+[node name="Player" parent="TileMap" instance=ExtResource("2_11u0q")]
+position = Vector2(0, -10)
+roll_speed = 400.0
