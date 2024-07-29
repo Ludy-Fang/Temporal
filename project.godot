@@ -13,7 +13,6 @@ config_version=5
 config/name="Temporal"
 run/main_scene="res://Testing/test_level.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
-config/icon="res://icon.svg"
 
 [input]
 

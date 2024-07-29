@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3 uid="uid://dnnqprjo6fe5"]
+
+[ext_resource type="Script" path="res://Enemies/SkeletonArcher/skeleton_archer.gd" id="1_8yf44"]
+[ext_resource type="Texture2D" uid="uid://cebmu1fiutxry" path="res://Resources/Final/Normal Attack.png" id="1_y5soi"]
+[ext_resource type="Script" path="res://Enemies/SkeletonArcher/StateMachine.gd" id="2_vgfwq"]
+[ext_resource type="Script" path="res://ClassTemplates/enemy_idle_template.gd" id="3_evkvh"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hvpsw"]
+height = 38.0
+
+[node name="SkeletonArcher" type="CharacterBody2D"]
+script = ExtResource("1_8yf44")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_y5soi")
+hframes = 8
+vframes = 4
+frame = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(2, 2)
+shape = SubResource("CapsuleShape2D_hvpsw")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("2_vgfwq")
+initial_state = NodePath("EnemyIdle")
+
+[node name="EnemyIdle" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy")]
+script = ExtResource("3_evkvh")
+enemy = NodePath("../..")

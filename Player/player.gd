@@ -13,11 +13,13 @@ extends CharacterBody2D
 @onready var roll_cooldown : Timer = $RollCooldown
 @onready var roll_timer : Timer = $RollTimer
 
-# Buffer and coyote time frames
+# Jump/roll buffer and coyote time frames
 @export var jump_buffer_time : int = 15
 @export var coyote_time : int = 15
+@export var roll_buffer_time : int = 15
 var jump_buffer_counter : int = 0
 var coyote_counter : int = 0
+var roll_buffer_counter : int = 0
 
 # Friction and air friction
 const friction : float = 0.5
@@ -27,7 +29,7 @@ var previous_velocity : Vector2
 
 # Variables for movement
 @export var max_speed : float = 200.0
-@export var roll_speed : float = 200.0
+@export var roll_speed : float = 000.0
 @export var acceleration : float = 50.0
 
 # Bool variables
@@ -42,18 +44,7 @@ func _physics_process(delta):
 	if position.y > 20:
 		position = Vector2(3, -20)
 	
-	if Input.is_action_pressed("roll") and can_roll:
-		can_roll = false
-		rolling = true
-		roll_timer.start()
-		roll_cooldown.start()
-		
-		# Applying a high velocity.x instantly for roll
-		if player_direction:
-			velocity.x = roll_speed
-		else:
-			velocity.x -= roll_speed
-	
+	roll()
 	moving()
 	jumping(delta)
 	move_and_slide()
@@ -61,44 +52,73 @@ func _physics_process(delta):
 	# Getting previous velocity for air friction
 	previous_velocity = velocity
 
+func roll():
+	
+	if Input.is_action_pressed("roll") and can_roll:
+		
+		# Change bools to indicate player is rolling and start timers
+		can_roll = false
+		rolling = true
+		roll_timer.start()
+		roll_cooldown.start()
+		
+		# Setting player's velocity to the roll speed
+		if player_direction:
+			velocity.x = roll_speed
+		else:
+			velocity.x = -roll_speed
+
 func get_gravity() -> float:
 	
-	# Returns normal gravity if player is jumping
-	if (velocity.y < 0.0):
-		return jump_gravity
+	# Reduce gravity if roll is active
+	if rolling:
+		return fall_gravity / 4
 	
-	# Returns greater gravity if player is falling
 	else:
-		return fall_gravity
+		
+		# Returns normal gravity if player is jumping
+		if (velocity.y < 0.0):
+			return jump_gravity
+		
+		# Returns greater gravity if player is falling
+		else:
+			return fall_gravity
 
 func moving():
 	
 	# Movement and flipping sprite left/right
 	if Input.is_action_pressed("right"):
-		velocity.x += acceleration
-		sprite_2d.flip_h = false
-		player_direction = true
+		if not rolling:
+			velocity.x += acceleration
+			sprite_2d.flip_h = false
+			player_direction = true
 	
 	elif Input.is_action_pressed("left"):
-		velocity.x -= acceleration
-		sprite_2d.flip_h = true
-		player_direction = false
+		if not rolling:
+			velocity.x -= acceleration
+			sprite_2d.flip_h = true
+			player_direction = false
 	
-	# Returning velocity.x to 0 if no keys are pressed
+	# Returning velocity.x to 0 if no keys are pressed and not rolling
 	else:
-		velocity.x = lerp(velocity.x, 0.0, friction)
+		if not rolling:
+			velocity.x = lerp(velocity.x, 0.0, friction)
 	
-	# Lerping velocity.x to maximum_speed if player is not rolling
+	# Capping velocity.x to maximum_speed if player is not rolling
 	if (velocity.x > max_speed) or (velocity.x < -max_speed):
-		if (rolling == false):
+		if not rolling:
 			velocity.x = clamp(velocity.x, -max_speed, max_speed)
 
 func jumping(delta):
 	
-	# Applying gravity and air friction
+	# Applying gravity
 	if not is_on_floor():
 		velocity.y += get_gravity() * delta
-		velocity.x = lerp(previous_velocity.x, velocity.x, air_friction)
+		
+		# Applying air friction if player is not rolling
+		if not rolling:
+			velocity.x = lerp(previous_velocity.x, velocity.x, air_friction)
+		
 	# Setting maximum falling gravity
 	if (velocity.y >= maximum_falling_velocity):
 		velocity.y = maximum_falling_velocity
