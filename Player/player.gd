@@ -35,7 +35,6 @@ var previous_velocity : Vector2
 # Bool variables
 var can_roll : bool = true
 var player_direction : bool = true
-
 var rolling : bool = false
 
 func _physics_process(delta):
@@ -54,8 +53,14 @@ func _physics_process(delta):
 
 func roll():
 	
-	if Input.is_action_pressed("roll") and can_roll:
-		
+	# Roll buffer
+	if Input.is_action_pressed("roll"):
+		roll_buffer_counter = roll_buffer_time
+	
+	if (roll_buffer_counter > 0):
+		roll_buffer_counter -= 1
+	
+	if (roll_buffer_counter > 0) and can_roll:
 		# Change bools to indicate player is rolling and start timers
 		can_roll = false
 		rolling = true
@@ -75,7 +80,6 @@ func get_gravity() -> float:
 		return fall_gravity / 4
 	
 	else:
-		
 		# Returns normal gravity if player is jumping
 		if (velocity.y < 0.0):
 			return jump_gravity
