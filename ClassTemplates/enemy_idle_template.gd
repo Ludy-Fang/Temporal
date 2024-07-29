@@ -38,9 +38,16 @@ func Update(delta: float):
 
 func Physics_Update(_delta: float):
 	
-	# Check if enemy is going to walk off a ledge
-	if (ledge_check_left.is_colliding() == false) or (ledge_check_right.is_colliding() == false):
-		move_direction *= -1
+	# Check if enemy is going to walk off a ledge, and turning around if so
+	# Also increasing wander_time to avoid rapid turning
+	if (enemy.velocity.x > 0):
+		if not ledge_check_right.is_colliding():
+			move_direction *= -1
+			wander_time += 1
+	elif (enemy.velocity.x < 0):
+		if not ledge_check_left.is_colliding():
+			move_direction *= -1
+			wander_time += 1
 	
 	# Moving enemy
 	if enemy:
