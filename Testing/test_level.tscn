@@ -461,7 +461,7 @@ jump_height = 80.0
 roll_speed = 400.0
 
 [node name="SkeletonArcher" parent="." instance=ExtResource("3_osohv")]
-position = Vector2(313, -45)
+position = Vector2(184, -26)
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_42tqb")

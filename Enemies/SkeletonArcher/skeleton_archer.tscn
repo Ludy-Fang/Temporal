@@ -46,7 +46,7 @@ enemy = NodePath("../..")
 ledge_check_left = NodePath("../../Raycasts/LedgeCheckLeft")
 ledge_check_right = NodePath("../../Raycasts/LedgeCheckRight")
 
-[node name="Raycasts" type="Node" parent="."]
+[node name="Raycasts" type="Node2D" parent="."]
 
 [node name="WallCheckRight" type="RayCast2D" parent="Raycasts"]
 position = Vector2(5, 17)
