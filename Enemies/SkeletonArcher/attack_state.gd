@@ -11,14 +11,14 @@ var direction : Vector2
 func Enter():
 	player = get_tree().get_nodes_in_group("Player")[0]
 
-func Update(delta: float):
+func Update(_delta: float):
 	# Flipping sprite in accordance to velocity.x
 	if (enemy.velocity.x > 0):
 		enemy_sprite.flip_h = false
 	elif (enemy.velocity.x < 0):
 		enemy_sprite.flip_h = true
 
-func Physics_Update(delta: float):
+func Physics_Update(_delta: float):
 	if (player.global_position.x > enemy.position.x):
 		enemy.velocity.x = movement_speed
 	else:
@@ -30,7 +30,3 @@ func Physics_Update(delta: float):
 		enemy.velocity.x = 0
 	
 	enemy.move_and_slide()
-
-func _on_detection_area_body_exited(body):
-	print("Transitioned from attack to idle")
-	Transitioned.emit(self, "idle")

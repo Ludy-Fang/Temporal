@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dnnqprjo6fe5"]
+[gd_scene load_steps=7 format=3 uid="uid://dnnqprjo6fe5"]
 
 [ext_resource type="Script" path="res://Enemies/SkeletonArcher/skeleton_archer.gd" id="1_8yf44"]
 [ext_resource type="Texture2D" uid="uid://cebmu1fiutxry" path="res://Resources/Final/Normal Attack.png" id="1_y5soi"]
@@ -9,9 +9,6 @@
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hvpsw"]
 radius = 6.0
 height = 38.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_s60qp"]
-radius = 182.025
 
 [node name="SkeletonArcher" type="CharacterBody2D"]
 collision_layer = 2
@@ -32,35 +29,46 @@ shape = SubResource("CapsuleShape2D_hvpsw")
 script = ExtResource("3_b3okb")
 initial_state = NodePath("Idle")
 
-[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy", "enemy_sprite", "ledge_check_left", "ledge_check_right")]
+[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy", "enemy_sprite", "ledge_check_left", "ledge_check_right", "wall_check_right", "wall_check_left", "line_of_sight")]
 script = ExtResource("3_evkvh")
 enemy = NodePath("../..")
 enemy_sprite = NodePath("../../Sprite2D")
-ledge_check_left = NodePath("../../LedgeCheckLeft")
-ledge_check_right = NodePath("../../LedgeCheckRight")
+ledge_check_left = NodePath("../../Raycasts/LedgeCheckLeft")
+ledge_check_right = NodePath("../../Raycasts/LedgeCheckRight")
+wall_check_right = NodePath("../../Raycasts/WallCheckRight")
+wall_check_left = NodePath("../../Raycasts/WallCheckLeft")
+line_of_sight = NodePath("../../LineOfSight")
 
 [node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("enemy_sprite", "enemy", "ledge_check_left", "ledge_check_right")]
 script = ExtResource("5_516a3")
 enemy_sprite = NodePath("../../Sprite2D")
 enemy = NodePath("../..")
-ledge_check_left = NodePath("../../LedgeCheckLeft")
-ledge_check_right = NodePath("../../LedgeCheckRight")
+ledge_check_left = NodePath("../../Raycasts/LedgeCheckLeft")
+ledge_check_right = NodePath("../../Raycasts/LedgeCheckRight")
 
-[node name="LedgeCheckRight" type="RayCast2D" parent="."]
-position = Vector2(5, 21)
-target_position = Vector2(2.08165e-12, 2)
+[node name="Raycasts" type="Node" parent="."]
+
+[node name="WallCheckRight" type="RayCast2D" parent="Raycasts"]
+position = Vector2(5, 17)
+target_position = Vector2(5, 0)
 collision_mask = 32
 
-[node name="LedgeCheckLeft" type="RayCast2D" parent="."]
+[node name="WallCheckLeft" type="RayCast2D" parent="Raycasts"]
+position = Vector2(-4, 17)
+target_position = Vector2(-4, 0)
+collision_mask = 32
+
+[node name="LedgeCheckLeft" type="RayCast2D" parent="Raycasts"]
 position = Vector2(-4, 21)
 target_position = Vector2(2.08165e-12, 2)
 collision_mask = 32
 
-[node name="DetectionArea" type="Area2D" parent="."]
-collision_layer = 16
+[node name="LedgeCheckRight" type="RayCast2D" parent="Raycasts"]
+position = Vector2(5, 21)
+target_position = Vector2(2.08165e-12, 2)
+collision_mask = 32
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
-shape = SubResource("CircleShape2D_s60qp")
-
-[connection signal="body_entered" from="DetectionArea" to="StateMachine/Idle" method="_on_detection_area_body_entered"]
-[connection signal="body_exited" from="DetectionArea" to="StateMachine/Attack" method="_on_detection_area_body_exited"]
+[node name="LineOfSight" type="RayCast2D" parent="."]
+position = Vector2(4, -11)
+target_position = Vector2(176, -1)
+collision_mask = 33

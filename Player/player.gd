@@ -1,4 +1,5 @@
 extends CharacterBody2D
+class_name Player
 
 # Variables for jumping 
 @export var jump_height : float = 100.0
