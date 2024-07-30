@@ -47,6 +47,15 @@ roll={
 ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="Player"
+2d_physics/layer_2="Enemies"
+2d_physics/layer_3="Player Projectiles"
+2d_physics/layer_4="Enemy Projectiles"
+2d_physics/layer_5="Enemy Areas"
+2d_physics/layer_6="Evironment"
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0

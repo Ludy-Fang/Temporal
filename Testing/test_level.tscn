@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://t6880ct1ucr8"]
 
-[ext_resource type="Texture2D" uid="uid://blnivwgqdfpuo" path="res://Resources/Free/Terrain/Terrain (16x16).png" id="1_8c6uv"]
+[ext_resource type="Texture2D" uid="uid://cs1t1q2wla3io" path="res://Resources/Free/Terrain/Terrain (16x16).png" id="1_8c6uv"]
 [ext_resource type="PackedScene" uid="uid://d1rcvwymfwqrg" path="res://Player/player.tscn" id="2_rtge5"]
 [ext_resource type="PackedScene" uid="uid://dnnqprjo6fe5" path="res://Enemies/SkeletonArcher/skeleton_archer.tscn" id="3_osohv"]
 
@@ -449,7 +449,8 @@ texture = ExtResource("1_8c6uv")
 20:10/0/physics_layer_0/angular_velocity = 0.0
 
 [sub_resource type="TileSet" id="TileSet_42tqb"]
-physics_layer_0/collision_layer = 1
+physics_layer_0/collision_layer = 32
+physics_layer_0/collision_mask = 3
 sources/0 = SubResource("TileSetAtlasSource_ko2e4")
 
 [node name="TestLevel" type="Node2D"]
@@ -460,7 +461,7 @@ jump_height = 80.0
 roll_speed = 400.0
 
 [node name="SkeletonArcher" parent="." instance=ExtResource("3_osohv")]
-position = Vector2(264, -23)
+position = Vector2(-46, -28)
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_42tqb")

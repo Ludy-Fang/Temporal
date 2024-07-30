@@ -40,15 +40,17 @@ func Physics_Update(_delta: float):
 	
 	# Check if enemy is going to walk off a ledge, and turning around if so
 	# Also increasing wander_time to avoid rapid turning
-	if (enemy.velocity.x > 0):
-		if not ledge_check_right.is_colliding():
+	if (enemy.velocity.x > 0) and (not ledge_check_right.is_colliding()):
 			move_direction *= -1
 			wander_time += 1
-	elif (enemy.velocity.x < 0):
-		if not ledge_check_left.is_colliding():
+	elif (enemy.velocity.x < 0) and (not ledge_check_left.is_colliding()):
 			move_direction *= -1
 			wander_time += 1
 	
 	# Moving enemy
 	if enemy:
 		enemy.velocity = move_direction * movement_speed
+
+func _on_detection_area_body_entered(_body):
+	print("Transitioned from idle to attack")
+	Transitioned.emit(self, "attack")

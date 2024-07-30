@@ -7,7 +7,8 @@
 radius = 8.0
 height = 22.0
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" groups=["Player"]]
+collision_mask = 50
 script = ExtResource("1_23u7b")
 roll_speed = 10000.0
 
