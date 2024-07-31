@@ -48,7 +48,6 @@ func Update(delta: float):
 		pass
 	elif (enemy.velocity.x < 0):
 		enemy.scale = Vector2(-1, 1)
-		enemy.rotation += deg_to_rad(180)
 		# enemy_sprite.flip_h = true
 	
 	# Once wanter time runs out, randomize movement again
