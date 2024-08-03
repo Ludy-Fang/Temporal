@@ -9,15 +9,18 @@ class_name Player
 @onready var jump_gravity : float = ((-2.0 * jump_height) / (jump_time_to_peak * jump_time_to_peak)) * -1.0
 @onready var fall_gravity : float = ((-2.0 * jump_height) / (jump_time_to_descent * jump_time_to_descent)) * -1.0
 
-# Sprite and timers
+# Sprites, timers, collision, and raycheck
 @onready var sprite_2d : Sprite2D = $Sprite2D
 @onready var roll_cooldown : Timer = $RollCooldown
 @onready var roll_timer : Timer = $RollTimer
+@onready var collision_cooldown : Timer = $CollisionDisabled
+@onready var ground_check : RayCast2D = $GroundCheck
+@onready var player_collision : CollisionShape2D = $CollisionShape2D
 
 # Jump/roll buffer and coyote time frames
 @export var jump_buffer_time : int = 15
-@export var coyote_time : int = 15
-@export var roll_buffer_time : int = 15
+@export var coyote_time : int = 20
+@export var roll_buffer_time : int = 20
 var jump_buffer_counter : int = 0
 var coyote_counter : int = 0
 var roll_buffer_counter : int = 0
@@ -39,15 +42,11 @@ var player_direction : bool = true
 var rolling : bool = false
 
 func _physics_process(delta):
-	
-	# Ignore this, this is for testing
-	if position.y > 0:
-		position = Vector2(3, -20)
-	
 	roll()
 	moving()
 	jumping(delta)
 	move_and_slide()
+	platform_check()
 	
 	# Getting previous velocity for air friction
 	previous_velocity = velocity
@@ -152,9 +151,19 @@ func jumping(delta):
 		velocity.y = jump_velocity
 		jump_buffer_counter = 0
 
+func platform_check():
+	var collider : Object = ground_check.get_collider()
+	if collider:
+		if collider.is_in_group("Platform") and Input.is_action_pressed("down"):
+			player_collision.disabled = true
+			collision_cooldown.start()
+
 # Roll cooldown and time of rolling
 func _on_roll_cooldown_timeout():
 	can_roll = true
 
 func _on_roll_timer_timeout():
 	rolling = false
+
+func _on_collision_disabled_timeout():
+	player_collision.disabled = false

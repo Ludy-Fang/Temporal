@@ -17,11 +17,11 @@ class_name EnemyIdle
 @export var movement_speed : float = 100.0
 
 # Wander direction and time, which will be randomized
-var move_direction : Vector2
+var move_direction : int
 var wander_time : float
 
 func Randomize_Movement():
-	move_direction = Vector2(randf_range(-50, 50), 0).normalized()
+	move_direction = randi_range(-1, 1)
 	wander_time = randf_range(1, 3)
 
 # On entering state, randomize movement
@@ -41,23 +41,21 @@ func Update(delta: float):
 		print("Transitioned from idle to attack")
 		Transitioned.emit(self, "attack")
 	
-	# Flipping enemy in accordance to velocity.x
-	if (enemy.velocity.x > 0):
-		# enemy.scale = Vector2(1, 1)
-		# enemy_sprite.flip_h = false
-		pass
-	elif (enemy.velocity.x < 0):
-		enemy.scale = Vector2(-1, 1)
-		enemy.rotation += deg_to_rad(180)
-		# enemy_sprite.flip_h = true
-	
-	# Once wanter time runs out, randomize movement again
+	# Once wander time runs out, randomize movement again
 	if wander_time > 0:
 		wander_time -= delta
 	else: 
 		Randomize_Movement()
 
 func Physics_Update(_delta: float):
+	
+	# Flipping enemy in accordance to velocity.x, along with los
+	if (enemy.velocity.x > 0):
+		enemy_sprite.flip_h = false
+		line_of_sight.scale = Vector2(1, 1)
+	elif (enemy.velocity.x < 0):
+		enemy_sprite.flip_h = true
+		line_of_sight.scale = Vector2(-1, 1)
 	
 	# Check if enemy is going to walk off a ledge/into a wall, and turning around if so
 	# Also increasing wander_time to avoid rapid turning
@@ -72,4 +70,4 @@ func Physics_Update(_delta: float):
 	
 	# Moving enemy
 	if enemy:
-		enemy.velocity = move_direction * movement_speed
+		enemy.velocity.x = movement_speed * move_direction

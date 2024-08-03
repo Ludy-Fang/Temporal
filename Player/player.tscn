@@ -1,24 +1,20 @@
 [gd_scene load_steps=4 format=3 uid="uid://d1rcvwymfwqrg"]
 
 [ext_resource type="Script" path="res://Player/player.gd" id="1_23u7b"]
-[ext_resource type="Texture2D" uid="uid://dvrbr75eyxpen" path="res://Resources/Knight Hero Platfomer/Walk.png" id="2_2nmd6"]
+[ext_resource type="Texture2D" uid="uid://dq8rc460bce0q" path="res://Resources/PlayerSprites/Knight/Knight.png" id="2_7ptuy"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_yik6a"]
-radius = 8.0
-height = 22.0
+height = 28.0
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 collision_mask = 50
 script = ExtResource("1_23u7b")
-roll_speed = 10000.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_2nmd6")
-hframes = 6
-frame = 2
+texture = ExtResource("2_7ptuy")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-2, 1)
+position = Vector2(1, 0)
 shape = SubResource("CapsuleShape2D_yik6a")
 
 [node name="RollTimer" type="Timer" parent="."]
@@ -28,8 +24,18 @@ one_shot = true
 [node name="RollCooldown" type="Timer" parent="."]
 one_shot = true
 
+[node name="CollisionDisabled" type="Timer" parent="."]
+wait_time = 0.3
+one_shot = true
+
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(2, 2)
 
+[node name="GroundCheck" type="RayCast2D" parent="."]
+position = Vector2(1, 14)
+target_position = Vector2(0, 7)
+collision_mask = 32
+
 [connection signal="timeout" from="RollTimer" to="." method="_on_roll_timer_timeout"]
 [connection signal="timeout" from="RollCooldown" to="." method="_on_roll_cooldown_timeout"]
+[connection signal="timeout" from="CollisionDisabled" to="." method="_on_collision_disabled_timeout"]

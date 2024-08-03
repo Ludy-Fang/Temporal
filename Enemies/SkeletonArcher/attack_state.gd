@@ -6,19 +6,31 @@ extends State
 @export var movement_speed : float = 50.0
 @export var ledge_check_left : RayCast2D
 @export var ledge_check_right : RayCast2D
+@export var line_of_sight : RayCast2D
+@export var range_check : RayCast2D
 var direction : Vector2
 
 func Enter():
+	line_of_sight.scale = Vector2(1, 1)
 	player = get_tree().get_nodes_in_group("Player")[0]
 
 func Update(_delta: float):
-	# Flipping sprite in accordance to velocity.x
+	line_of_sight.look_at(player.global_position)
+	range_check.look_at(player.global_position)
+	
+	if line_of_sight.get_collider() is Player == false:
+		print(line_of_sight.get_collider())
+		print("Transitioned from attack to idle")
+		Transitioned.emit(self, "idle")
+
+func Physics_Update(_delta: float):
+	
+	# Flipping enemy in accordance to velocity.x, along with los
 	if (enemy.velocity.x > 0):
 		enemy_sprite.flip_h = false
 	elif (enemy.velocity.x < 0):
 		enemy_sprite.flip_h = true
-
-func Physics_Update(_delta: float):
+	
 	if (player.global_position.x > enemy.position.x):
 		enemy.velocity.x = movement_speed
 	else:
