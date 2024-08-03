@@ -41,7 +41,20 @@ func Update(delta: float):
 		print("Transitioned from idle to attack")
 		Transitioned.emit(self, "attack")
 	
+<<<<<<< HEAD
 	# Once wander time runs out, randomize movement again
+=======
+	# Flipping enemy in accordance to velocity.x
+	if (enemy.velocity.x > 0):
+		# enemy.scale = Vector2(1, 1)
+		# enemy_sprite.flip_h = false
+		pass
+	elif (enemy.velocity.x < 0):
+		enemy.scale = Vector2(-1, 1)
+		# enemy_sprite.flip_h = true
+	
+	# Once wanter time runs out, randomize movement again
+>>>>>>> b86143d5d14b23ba01761e0d0c822b300adf2751
 	if wander_time > 0:
 		wander_time -= delta
 	else: 
