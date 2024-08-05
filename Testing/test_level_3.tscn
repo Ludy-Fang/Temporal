@@ -39,6 +39,10 @@ sources/1 = SubResource("TileSetAtlasSource_fpn6v")
 
 [node name="Player" parent="." instance=ExtResource("1_rs687")]
 position = Vector2(0, -16)
+jump_time_to_peak = 0.5
+jump_time_to_descent = 0.4
+max_speed = 250.0
+roll_speed = 500.0
 
 [node name="Platforms" type="TileMap" parent="." groups=["Platform"]]
 tile_set = SubResource("TileSet_8822j")
