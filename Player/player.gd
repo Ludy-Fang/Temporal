@@ -95,12 +95,14 @@ func moving():
 		if not rolling:
 			velocity.x += acceleration
 			sprite_2d.flip_h = false
+			$KnightCrossbow.scale = Vector2(1, 1)
 			player_direction = true
 	
 	elif Input.is_action_pressed("left"):
 		if not rolling:
 			velocity.x -= acceleration
 			sprite_2d.flip_h = true
+			$KnightCrossbow.scale = Vector2(-1, 1)
 			player_direction = false
 	
 	# Returning velocity.x to 0 if no keys are pressed and not rolling

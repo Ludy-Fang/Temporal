@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://1n3y5ttehnla"]
+
+[ext_resource type="Script" path="res://Weapons/Knight_Crossbow/knight_crossbow_bolt.gd" id="1_8thyh"]
+[ext_resource type="Texture2D" uid="uid://cfpj5ii2hevs7" path="res://Resources/Weapons/Knight_Crossbow.png" id="1_40gvd"]
+
+[node name="KnightCrossbowBolt" type="Area2D"]
+script = ExtResource("1_8thyh")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_40gvd")
+hframes = 3
+frame = 2
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(8, 0, 8, 1, 7, 2, 5, 2, 5, -1, 7, -1)
