@@ -3,10 +3,22 @@
 [ext_resource type="Script" path="res://Weapons/Knight_Crossbow/knight_crossbow.gd" id="1_2qt43"]
 [ext_resource type="Texture2D" uid="uid://cfpj5ii2hevs7" path="res://Resources/Weapons/Knight_Crossbow.png" id="2_ypp52"]
 
-[node name="KnightCrossbow" type="Node2D"]
+[node name="KnightCrossbow" type="Node2D" node_paths=PackedStringArray("spawn_position", "bullet_cooldown")]
 script = ExtResource("1_2qt43")
+spawn_position = NodePath("Marker2D")
+bullet_cooldown = NodePath("Timer")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(10, -3)
 texture = ExtResource("2_ypp52")
 region_enabled = true
 region_rect = Rect2(0, 0, 31.9827, 16)
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(20, -2)
+gizmo_extents = 2.0
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

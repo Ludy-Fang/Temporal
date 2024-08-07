@@ -11,9 +11,9 @@ class_name Player
 
 # Sprites, timers, collision, and raycheck
 @onready var sprite_2d : Sprite2D = $Sprite2D
-@onready var roll_cooldown : Timer = $RollCooldown
-@onready var roll_timer : Timer = $RollTimer
-@onready var collision_cooldown : Timer = $CollisionDisabled
+@onready var roll_cooldown : Timer = $Timers/RollCooldown
+@onready var roll_timer : Timer = $Timers/RollTimer
+@onready var collision_cooldown : Timer = $Timers/CollisionDisabled
 @onready var ground_check : RayCast2D = $GroundCheck
 @onready var player_collision : CollisionShape2D = $CollisionShape2D
 
@@ -41,7 +41,7 @@ var can_roll : bool = true
 var player_direction : bool = true
 var rolling : bool = false
 
-func _physics_process(delta):
+func _physics_process(delta: float) -> void:
 	roll()
 	moving()
 	jumping(delta)
@@ -51,8 +51,7 @@ func _physics_process(delta):
 	# Getting previous velocity for air friction
 	previous_velocity = velocity
 
-func roll():
-	
+func roll() -> void:
 	# Roll buffer
 	if Input.is_action_pressed("roll"):
 		roll_buffer_counter = roll_buffer_time
@@ -74,7 +73,6 @@ func roll():
 			velocity.x = -roll_speed
 
 func get_gravity() -> float:
-	
 	# Reduce gravity if roll is active
 	if rolling:
 		return fall_gravity / 4
@@ -88,21 +86,17 @@ func get_gravity() -> float:
 		else:
 			return fall_gravity
 
-func moving():
-	
+func moving() -> void:
 	# Movement and flipping sprite left/right
 	if Input.is_action_pressed("right"):
 		if not rolling:
 			velocity.x += acceleration
 			sprite_2d.flip_h = false
-			$KnightCrossbow.scale = Vector2(1, 1)
 			player_direction = true
-	
 	elif Input.is_action_pressed("left"):
 		if not rolling:
 			velocity.x -= acceleration
 			sprite_2d.flip_h = true
-			$KnightCrossbow.scale = Vector2(-1, 1)
 			player_direction = false
 	
 	# Returning velocity.x to 0 if no keys are pressed and not rolling
@@ -115,8 +109,7 @@ func moving():
 		if not rolling:
 			velocity.x = clamp(velocity.x, -max_speed, max_speed)
 
-func jumping(delta):
-	
+func jumping(delta) -> void:
 	# Applying gravity
 	if not is_on_floor():
 		velocity.y += get_gravity() * delta
@@ -124,7 +117,7 @@ func jumping(delta):
 		# Applying air friction if player is not rolling
 		if not rolling:
 			velocity.x = lerp(previous_velocity.x, velocity.x, air_friction)
-		
+	
 	# Setting maximum falling gravity
 	if (velocity.y >= maximum_falling_velocity):
 		velocity.y = maximum_falling_velocity
@@ -132,7 +125,6 @@ func jumping(delta):
 	# Coyote time
 	if is_on_floor():
 		coyote_counter = coyote_time
-	
 	if not is_on_floor():
 		if coyote_counter > 0:
 			coyote_counter -= 1
@@ -144,7 +136,6 @@ func jumping(delta):
 	# Jump buffer
 	if Input.is_action_just_pressed("up"):
 		jump_buffer_counter = jump_buffer_time
-	
 	if (jump_buffer_counter > 0):
 		jump_buffer_counter -= 1
 	
@@ -153,7 +144,9 @@ func jumping(delta):
 		velocity.y = jump_velocity
 		jump_buffer_counter = 0
 
-func platform_check():
+func platform_check() -> void:
+	# If the object the player is standing on is in the group Platform,
+	# when the player presses down, disable collision temporarily
 	var collider : Object = ground_check.get_collider()
 	if collider:
 		if collider.is_in_group("Platform") and Input.is_action_pressed("down"):
@@ -161,11 +154,12 @@ func platform_check():
 			collision_cooldown.start()
 
 # Roll cooldown and time of rolling
-func _on_roll_cooldown_timeout():
+func _on_roll_cooldown_timeout() -> void:
 	can_roll = true
 
-func _on_roll_timer_timeout():
+func _on_roll_timer_timeout() -> void:
 	rolling = false
 
-func _on_collision_disabled_timeout():
+# Disabling collision for falling down platforms
+func _on_collision_disabled_timeout() -> void:
 	player_collision.disabled = false

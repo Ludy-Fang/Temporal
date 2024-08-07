@@ -15,32 +15,37 @@ script = ExtResource("1_23u7b")
 texture = ExtResource("2_7ptuy")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(1, 0)
 shape = SubResource("CapsuleShape2D_yik6a")
 
-[node name="RollTimer" type="Timer" parent="."]
-wait_time = 0.2
-one_shot = true
-
-[node name="RollCooldown" type="Timer" parent="."]
-one_shot = true
-
-[node name="CollisionDisabled" type="Timer" parent="."]
-wait_time = 0.3
-one_shot = true
-
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(2, 2)
+zoom = Vector2(3, 3)
 
 [node name="GroundCheck" type="RayCast2D" parent="."]
 position = Vector2(1, 14)
 target_position = Vector2(0, 7)
 collision_mask = 32
 
-[node name="KnightCrossbow" parent="." node_paths=PackedStringArray("player") instance=ExtResource("3_0ne06")]
-position = Vector2(7, 1)
-player = NodePath("..")
+[node name="Weapons" type="Node2D" parent="."]
 
-[connection signal="timeout" from="RollTimer" to="." method="_on_roll_timer_timeout"]
-[connection signal="timeout" from="RollCooldown" to="." method="_on_roll_cooldown_timeout"]
-[connection signal="timeout" from="CollisionDisabled" to="." method="_on_collision_disabled_timeout"]
+[node name="KnightCrossbow" parent="Weapons" node_paths=PackedStringArray("player") instance=ExtResource("3_0ne06")]
+position = Vector2(-3, 5)
+player = NodePath("../..")
+
+[node name="Timers" type="Node" parent="."]
+
+[node name="RollCooldown" type="Timer" parent="Timers"]
+one_shot = true
+
+[node name="RollTimer" type="Timer" parent="Timers"]
+wait_time = 0.2
+one_shot = true
+
+[node name="CollisionDisabled" type="Timer" parent="Timers"]
+wait_time = 0.3
+one_shot = true
+
+[connection signal="timeout" from="Timers/RollCooldown" to="." method="_on_roll_cooldown_timeout"]
+[connection signal="timeout" from="Timers/RollTimer" to="." method="_on_roll_timer_timeout"]
+[connection signal="timeout" from="Timers/CollisionDisabled" to="." method="_on_collision_disabled_timeout"]

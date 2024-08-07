@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Enemies/SkeletonArcher/skeleton_archer.gd" id="1_8yf44"]
 [ext_resource type="Texture2D" uid="uid://cebmu1fiutxry" path="res://Resources/Final/Normal Attack.png" id="1_y5soi"]
 [ext_resource type="Script" path="res://Enemies/SkeletonArcher/state_machine.gd" id="3_b3okb"]
-[ext_resource type="Script" path="res://ClassTemplates/enemy_idle_template.gd" id="3_evkvh"]
+[ext_resource type="Script" path="res://ClassTemplates/EnemyTemplates/enemy_idle_template.gd" id="3_evkvh"]
 [ext_resource type="Script" path="res://Enemies/SkeletonArcher/attack_state.gd" id="5_516a3"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hvpsw"]

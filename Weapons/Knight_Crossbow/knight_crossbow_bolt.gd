@@ -1,11 +1,13 @@
-extends Area2D
+extends  Bullet
 
-@export var bolt_speed : int = 1000
+# Determine bullet speed
+func _init() -> void:
+	bullet_speed = 1000
 
-func _ready():
-	
-	# Bullets will always be visible
-	set_as_top_level(true)
+# Override queue_free, make arrow stuck in environment/enemy instead
+func _on_body_entered(_body) -> void:
+	bullet_speed = 0
+	velocity = Vector2(0, 0)
 
-func _process(delta):
-	position += (Vector2.RIGHT * bolt_speed).rotated(rotation) * delta
+func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
+	queue_free()
